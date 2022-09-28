@@ -1,4 +1,22 @@
 {
+  "name": "september_project",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tribe-Sydney/September_Project.git"
+  },
+  "author": "Tribe Sydney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tribe-Sydney/September_Project/issues"
+  },
+  "homepage": "https://github.com/Tribe-Sydney/September_Project#readme",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.2",
