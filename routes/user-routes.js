@@ -8,7 +8,7 @@ const {
     updateUser,
     getAll,
     getOne,
-} = require('../controller/new')
+} = require('../model/User')
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
