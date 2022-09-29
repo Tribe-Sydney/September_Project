@@ -31,6 +31,7 @@ const createAndSendToken = CatchAsync(async (user, statusCode, res) => {
   });
 });
 
+// Sign Up User
 exports.signUp = CatchAsync(async (req, res) => {
   const { email, fullName, password, passwordConfirm } = req.body;
   const user = await User.create({
@@ -43,7 +44,7 @@ exports.signUp = CatchAsync(async (req, res) => {
   createAndSendToken(user, 201, res);
 });
 
-//User login handler
+// Sign In User
 exports.signIn = CatchAsync(async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -58,6 +59,7 @@ exports.signIn = CatchAsync(async (req, res) => {
   createAndSendToken(user, 200, res);
 });
 
+// Authentication
 exports.protect = CatchAsync(async (req, res, next) => {
   let token;
   if (
@@ -78,6 +80,7 @@ exports.protect = CatchAsync(async (req, res, next) => {
   next();
 });
 
+// Authorization
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.roles)) {
