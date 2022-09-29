@@ -2,54 +2,6 @@ const User = require("../models/User.js");
 const CatchAsync = require("../utils/catch-async.js");
 
 //User signup handler
-exports.signUp = CatchAsync(async (req, res) => {
-  const { email, fullName, password, passwordConfirm } = req.body;
-  const user = await User.create({
-    email,
-    fullName,
-    password,
-    passwordConfirm,
-  });
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
-
-//User login handler
-exports.signIn = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Please enter a valid password and email",
-      });
-    }
-    const user = await User.findOne({ email }).select("+password");
-    const confirmPassword = await bcrypt.compare(password, user.password);
-    if (!confirmPassword || !user) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Invalid email or password",
-      });
-    }
-    res.status(200).json({
-      status: "success",
-      data: {
-        user,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: "fail",
-      message: error,
-    });
-  }
-};
 
 exports.deleteUser = async (req, res) => {
   try {
