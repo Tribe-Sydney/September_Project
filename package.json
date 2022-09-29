@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/Tribe-Sydney/September_Project#readme",
   "scripts": {
+    "start:prod": "set NODE_ENV=production && nodemon server.js",
     "start": "nodemon server.js"
   },
   "dependencies": {
