@@ -1,16 +1,14 @@
 const User = require("../models/User.js");
-const bcrypt = require("bcryptjs");
 
 //User signup handler
 exports.signUp = async (req, res) => {
   try {
-    const { email, fullName,  password } = req.body;
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
+    const { email, fullName, password, passwordConfirm } = req.body;
     const user = await User.create({
       email,
       fullName,
-      password: hash,
+      password,
+      passwordConfirm,
     });
 
     res.status(201).json({
@@ -90,7 +88,8 @@ exports.updateUser = async (req, res) => {
       });
     }
     const email = req.body.email === undefined ? user.email : req.body.email;
-    const fullName = req.body.fullName === undefined ? user.fullName : req.body.fullName;
+    const fullName =
+      req.body.fullName === undefined ? user.fullName : req.body.fullName;
 
     const updatedUser = await User.findByIdAndUpdate(req.params.id, update, {
       new: true,
@@ -111,7 +110,7 @@ exports.updateUser = async (req, res) => {
 };
 
 //Get All Users
-exports.getAll = async (req, res) => {
+exports.getAllUser = async (req, res) => {
   try {
     const user = await User.find();
     res.status(200).json({
@@ -129,7 +128,7 @@ exports.getAll = async (req, res) => {
 };
 
 //Get One User
-exports.getOne = async (req, res) => {
+exports.getOneUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.status(200).json({

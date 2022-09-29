@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSChema = new mongoose.Schema({
   fullName: {
@@ -19,9 +20,10 @@ const userSChema = new mongoose.Schema({
     minLength: [8, "Password must ba at least 8 characters"],
     validate: {
       validator: function (val) {
-        return /^(?=.* [A-Z])(?=.* [a-z])(?=.*[\d])[A-Za-z\d]{8,}$/.test(val);
+        return /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\d])[A-Za-z\d]{8,}/.test(val);
       },
-      message: "Password and confirm password are different",
+      message:
+        "Password must contain at least a number, a lowercase and an uppercase alphabeth",
     },
   },
   passwordConfirm: {
@@ -39,6 +41,15 @@ const userSChema = new mongoose.Schema({
     default: "user",
     enum: ["user", "admin"],
   },
+});
+
+userSChema.pre("save", async function (next) {
+  // if (!this.isModified('password')) return next();
+
+  let salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  this.passwordConfirm = undefined;
+  next();
 });
 
 const User = mongoose.model("User", userSChema);
