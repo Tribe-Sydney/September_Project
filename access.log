@@ -5,3 +5,4 @@
 ::1 - - [29/Sep/2022:12:17:33 +0000] "POST /api/v1/users/signup HTTP/1.1" 404 159 "-" "PostmanRuntime/7.29.2"
 ::1 - - [29/Sep/2022:12:19:35 +0000] "POST /api/v1/users/signup HTTP/1.1" 404 159 "-" "PostmanRuntime/7.29.2"
 ::1 - - [29/Sep/2022:12:20:39 +0000] "POST /api/v1/users/signup HTTP/1.1" 404 159 "-" "PostmanRuntime/7.29.2"
+::1 - - [29/Sep/2022:12:21:17 +0000] "POST /api/v1/users/signup HTTP/1.1" 500 51 "-" "PostmanRuntime/7.29.2"
