@@ -4,6 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const ErrorHandler = require("./controllers/error-controllers");
 const userRouter = require("./routes/user-routes");
+const productRouter = require("./routes/product-routes");
+const orderRouter = require("./routes/order-routes");
 const app = express();
 
 app.use(express.json());
@@ -16,6 +18,8 @@ let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/products", productRouter);
+app.use("/api/v1/orders", orderRouter);
 app.all("*", (req, res, next) => {
   const err = new AppError(`http://localhost:3000${req.url} not found`, 404);
   next(err);
