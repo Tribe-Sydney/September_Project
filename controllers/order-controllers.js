@@ -1,4 +1,4 @@
-const Order = require('../models/order-model')
+const Order = require('../models/Order')
 const catchAsync = require('../utils/catch-async')
 
 exports.createOrder =  catchAsync(async (req, res, next) => {
