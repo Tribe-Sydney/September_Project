@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: [true, "A product must have an image"],
+    //required: [true, "A product must have an image"],
   },
 });
 

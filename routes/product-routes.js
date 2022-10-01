@@ -6,12 +6,20 @@ const {
   updateProduct,
   deleteProduct,
   getOneProduct,
+  uploadProductImage,
+  resizeImage,
 } = require("../controllers/product-controllers");
 const router = express.Router();
 
 router
   .route("/")
-  .post(protect, restrictTo("admin"), createProduct)
+  .post(
+    protect,
+    restrictTo("admin"),
+    uploadProductImage,
+    resizeImage,
+    createProduct
+  )
   .get(getAllProduct);
 router
   .route("/:id")

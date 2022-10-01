@@ -1,9 +1,42 @@
+const multer = require("multer");
+const sharp = require("sharp");
 const Product = require("../models/Product");
 const CatchAsync = require("../utils/catch-async");
 const ErrorObject = require("../utils/error");
 const QueryMethod = require("../utils/query");
 
-// creating praoducts
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new ErrorObject("Please upload only an image file", 400), false);
+  }
+};
+
+const uploadImage = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadProductImage = uploadImage.single("image");
+
+exports.resizeImage = CatchAsync(async (req, res, next) => {
+  let timeStamp = Date.now();
+  const productName = `${req.body.name}-${timeStamp}.jpeg`;
+  req.body.image = productName;
+
+  await sharp(req.file.buffer)
+    .resize(320, 240)
+    .toFormat("jpeg")
+    .jpeg({ quality: 80 })
+    .toFile(`public/product/img/${productName}`);
+
+  next();
+});
+
+// creating products
 exports.createProduct = CatchAsync(async (req, res, next) => {
   const { name, title, quantity, available, amount, image } = req.body;
   const product = await Product.create({
@@ -51,8 +84,12 @@ exports.updateProduct = CatchAsync(async (req, res, next) => {
 
 // get all products
 exports.getAllProduct = CatchAsync(async (req, res, next) => {
-  let products = Product.find();
-  products = await products.QueryMethod().sort().filter().limit().paginate();
+  let queriedProducts = new QueryMethod(Product.find(), req.query)
+    .sort()
+    .filter()
+    .limit()
+    .paginate();
+  let products = await queriedProducts.query;
   res.status(200).json({
     status: "success",
     results: products.length,
