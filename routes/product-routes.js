@@ -1,14 +1,22 @@
 const express = require("express");
-const {getAllProduct, createProduct, updateProduct, deleteProduct, getOneProduct 
- } = require("../controllers/product-controllers");
+const { protect, restrictTo } = require("../controllers/auth-controller");
+const {
+  getAllProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getOneProduct,
+} = require("../controllers/product-controllers");
 const router = express.Router();
 
-//this is just an example
-router.post('/:id', createProduct);
-router.delete('/:id',  deleteProduct);
-router.patch('/:id', updateProduct);
-router.route('/:id', itemFour)
-router.get('/:id',getOneProduct)
-router.route('/', getAllProduct)
+router
+  .route("/")
+  .post(protect, restrictTo(admin), createProduct)
+  .get(getAllProduct);
+router
+  .route("/:id")
+  .delete(protect, restrictTo(admin), deleteProduct)
+  .patch(protect, restrictTo(admin), updateProduct)
+  .get(getOneProduct);
 
 module.exports = router;

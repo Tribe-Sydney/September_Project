@@ -18,14 +18,12 @@ const devError = (err, res) => {
 };
 
 const prodError = (err, res) => {
-  console.log(err.operational);
   if (err.operational === true) {
     res.status(404).json({
       status: err.status,
       message: err.message,
     });
   } else {
-    console.error(err);
     res.status(500).json({
       status: "error",
       message: "Something went wrong",
@@ -40,7 +38,6 @@ const ErrorHandler = (err, req, res, next) => {
   if (NODE_ENV === "development") {
     devError(err, res);
   } else {
-    console.log(NODE_ENV);
     let error = { ...err };
     if (error.name === "CastError") error = handleCastError(error);
     if (error.name === "JsonWebTokenError") error = handleWebTokenError(error);
