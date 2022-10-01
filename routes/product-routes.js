@@ -24,7 +24,13 @@ router
 router
   .route("/:id")
   .delete(protect, restrictTo("admin"), deleteProduct)
-  .patch(protect, restrictTo("admin"), updateProduct)
+  .patch(
+    protect,
+    restrictTo("admin"),
+    uploadProductImage,
+    resizeImage,
+    updateProduct
+  )
   .get(getOneProduct);
 
 module.exports = router;

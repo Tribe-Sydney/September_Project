@@ -23,15 +23,31 @@ const uploadImage = multer({
 exports.uploadProductImage = uploadImage.single("image");
 
 exports.resizeImage = CatchAsync(async (req, res, next) => {
-  let timeStamp = Date.now();
-  const productName = `${req.body.name}-${timeStamp}.jpeg`;
-  req.body.image = productName;
+  if (req.file) {
+    let timeStamp = Date.now();
+    let id = req.params.id;
+    let productName;
+    if (id) {
+      const product = await Product.findById(id);
+      if (!product) {
+        return next(
+          new ErrorObject(
+            `There is no product with the is ${req.params.id}`,
+            400
+          )
+        );
+      }
+      productName = `${product.name}-${timeStamp}.jpeg`;
+    }
+    productName = `${req.body.name}-${timeStamp}.jpeg`;
+    req.body.image = productName;
 
-  await sharp(req.file.buffer)
-    .resize(320, 240)
-    .toFormat("jpeg")
-    .jpeg({ quality: 80 })
-    .toFile(`public/product/img/${productName}`);
+    await sharp(req.file.buffer)
+      .resize(320, 240)
+      .toFormat("jpeg")
+      .jpeg({ quality: 80 })
+      .toFile(`public/product/img/${productName}`);
+  }
 
   next();
 });
@@ -55,7 +71,7 @@ exports.createProduct = CatchAsync(async (req, res, next) => {
 
 // updating products (either part or all aspect of the product)
 exports.updateProduct = CatchAsync(async (req, res, next) => {
-  const product = await product.findById(req.params.id);
+  const product = await Product.findById(req.params.id);
   if (!product) {
     return next(
       new ErrorObject(`There is no product with the is ${req.params.id}`, 400)
@@ -120,7 +136,7 @@ exports.deleteProduct = CatchAsync(async (req, res, next) => {
       new ErrorObject(`There is no product with the id ${req.params.id}`, 400)
     );
   }
-  await product.findByIdAndDelete(req.params.id);
+  await Product.findByIdAndDelete(req.params.id);
   res.status(204).json({
     status: "success",
   });
