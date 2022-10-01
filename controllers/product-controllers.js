@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const CatchAsync = require("../utils/catch-async");
 const ErrorObject = require("../utils/error");
+const QueryMethod = require("../utils/query");
 
 // creating praoducts
 exports.createProduct = CatchAsync(async (req, res, next) => {
@@ -50,7 +51,8 @@ exports.updateProduct = CatchAsync(async (req, res, next) => {
 
 // get all products
 exports.getAllProduct = CatchAsync(async (req, res, next) => {
-  const products = await Product.find();
+  let products = Product.find();
+  products = await products.QueryMethod().sort().filter().limit().paginate();
   res.status(200).json({
     status: "success",
     results: products.length,

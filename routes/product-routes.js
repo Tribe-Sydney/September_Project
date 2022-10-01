@@ -11,12 +11,12 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(protect, restrictTo(admin), createProduct)
+  .post(protect, restrictTo("admin"), createProduct)
   .get(getAllProduct);
 router
   .route("/:id")
-  .delete(protect, restrictTo(admin), deleteProduct)
-  .patch(protect, restrictTo(admin), updateProduct)
+  .delete(protect, restrictTo("admin"), deleteProduct)
+  .patch(protect, restrictTo("admin"), updateProduct)
   .get(getOneProduct);
 
 module.exports = router;
