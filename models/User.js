@@ -64,7 +64,7 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-userSChema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
   // if (!this.isModified('password')) return next();
 
   let salt = await bcrypt.genSalt(10);
