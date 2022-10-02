@@ -93,3 +93,79 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.forgotPassword = CatchAsync(async (req, res, next) => {
+  // 1. Get User based on posted email
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(
+      new ErrorObject("There is no user with the provided email address", 404)
+    );
+  }
+  // 2. Generate random reset token
+  const resetToken = user.createPasswordResetToken();
+  user.save({ validateBeforeSave: false });
+
+  // 3. Send token to the email addess
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/users/reset-password/${resetToken}`;
+
+  const message = `To reset your password click on the link below to submit your new password: ${resetUrl}`;
+
+  try {
+    await sendEmail({
+      message,
+      email: user.email,
+      subject: "Your password reset url. It's valid for 10mins",
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Token has been sent to your mail",
+      resetUrl,
+    });
+  } catch (err) {
+    (user.passwordResetToken = undefined),
+      (user.passwordTokenExpires = undefined),
+      await user.save({ validateBeforeSave: false });
+    next(new ErrorObject("Error while sending the token to your mail", 500));
+  }
+});
+
+exports.resetPassword = CatchAsync(async (req, res, next) => {
+  const hashToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+  const user = await User.findOne({
+    passwordResetToken: hashToken,
+    passwordTokenExpires: { $gt: Date.now() },
+  });
+  if (!user) {
+    return next(new ErrorObject("Token is invalid or it has expired", 400));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordTokenExpires = undefined;
+  user.passwordChangedAt = Date.now() - 1000;
+  await user.save();
+
+  createAndSendToken(user, 200, res);
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+  const { newPassword, newPasswordConfirm } = req.body;
+  if (!(await bcrypt.compare(req.body.password, user.password))) {
+    return next(new AppError("Your password is incorrect", 401));
+  }
+
+  user.password = newPassword;
+  user.passwordConfirm = newPasswordConfirm;
+  await user.save();
+
+  createAndSendToken(user, 200, res);
+});
