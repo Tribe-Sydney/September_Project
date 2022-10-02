@@ -98,3 +98,7 @@
 ::1 - - [02/Oct/2022:16:39:52 +0000] "PATCH /api/v1/users/update-password/63382f1272f7962bf951dbd1 HTTP/1.1" 500 255 "-" "PostmanRuntime/7.29.2"
 ::1 - - [02/Oct/2022:16:40:29 +0000] "PATCH /api/v1/users/update-password/63382f1272f7962bf951dbd1 HTTP/1.1" 401 269 "-" "PostmanRuntime/7.29.2"
 ::1 - - [02/Oct/2022:16:40:48 +0000] "PATCH /api/v1/users/update-password/63382f1272f7962bf951dbd1 HTTP/1.1" 200 368 "-" "PostmanRuntime/7.29.2"
+::1 - - [02/Oct/2022:16:46:58 +0000] "POST /api/v1/users/forgot-password HTTP/1.1" 200 193 "-" "PostmanRuntime/7.29.2"
+::1 - - [02/Oct/2022:16:47:46 +0000] "PATCH /api/v1/users/reset-password/095ca48c6a806ab409c1f96bd671612a1ea296ed5fa60ab9bfffae11346ff880 HTTP/1.1" 200 368 "-" "PostmanRuntime/7.29.2"
+::1 - - [02/Oct/2022:16:48:33 +0000] "POST /api/v1/users/signin HTTP/1.1" 200 368 "-" "PostmanRuntime/7.29.2"
+::1 - - [02/Oct/2022:16:49:20 +0000] "PATCH /api/v1/users/reset-password/095ca48c6a806ab409c1f96bd671612a1ea296ed5fa60ab9bfffae11346ff880 HTTP/1.1" 400 360 "-" "PostmanRuntime/7.29.2"
