@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const User = require("../models/User");
 const CatchAsync = require("../utils/catch-async");
 const ErrorObject = require("../utils/error");
+const sendEmail = require("../utils/email");
 
 const { JWT_COOKIE_EXPIRES_IN, JWT_EXPIRES_IN, JWT_SECRET, NODE_ENV } =
   process.env;
@@ -128,7 +130,7 @@ exports.forgotPassword = CatchAsync(async (req, res, next) => {
   } catch (err) {
     (user.passwordResetToken = undefined),
       (user.passwordTokenExpires = undefined),
-      await user.save({ validateBeforeSave: false });
+      await user.save();
     next(new ErrorObject("Error while sending the token to your mail", 500));
   }
 });
@@ -151,16 +153,16 @@ exports.resetPassword = CatchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordTokenExpires = undefined;
   user.passwordChangedAt = Date.now() - 1000;
-  await user.save();
+  await user.save({ validateBeforeSave: false });
 
   createAndSendToken(user, 200, res);
 });
 
-exports.updatePassword = catchAsync(async (req, res, next) => {
+exports.updatePassword = CatchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
   const { newPassword, newPasswordConfirm } = req.body;
   if (!(await bcrypt.compare(req.body.password, user.password))) {
-    return next(new AppError("Your password is incorrect", 401));
+    return next(new ErrorObject("Your password is incorrect", 401));
   }
 
   user.password = newPassword;

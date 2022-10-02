@@ -3,7 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
-const userSChema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: [true, "A user must have a name"],
@@ -53,6 +53,15 @@ const userSChema = new mongoose.Schema({
   },
 });
 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  let salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  this.passwordConfirm = undefined;
+  next();
+});
+
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 
@@ -64,15 +73,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-userSchema.pre("save", async function (next) {
-  // if (!this.isModified('password')) return next();
-
-  let salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  this.passwordConfirm = undefined;
-  next();
-});
-
 userSchema.methods.changePasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     console.log(JWTTimestamp < this.passwordChangedAt);
@@ -81,6 +81,6 @@ userSchema.methods.changePasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
-const User = mongoose.model("User", userSChema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
