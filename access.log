@@ -149,3 +149,4 @@
 ::1 - - [03/Oct/2022:11:07:28 +0000] "DELETE /api/v1/orders/6338bf7a38e0c114614ca334 HTTP/1.1" 204 - "-" "PostmanRuntime/7.29.2"
 ::1 - - [03/Oct/2022:11:17:23 +0000] "POST /api/v1/orders HTTP/1.1" 200 199 "-" "PostmanRuntime/7.29.2"
 ::1 - - [03/Oct/2022:11:19:45 +0000] "PATCH /api/v1/orders/633abbaaf45a5207367911eb HTTP/1.1" 200 189 "-" "PostmanRuntime/7.29.2"
+::1 - - [03/Oct/2022:11:20:53 +0000] "PATCH /api/v1/orders/633ac4c29e85e68788ff8e53 HTTP/1.1" 200 206 "-" "PostmanRuntime/7.29.2"
