@@ -28,16 +28,16 @@ Creating the backend for an E-commerce web application. Which includes the follo
 
 # Project members
 
-Nnadozie Anika
-Obi Chukwudi Edwin
-Edem Emmanuel Gabriel
-Peter Oluwafemi Agboola
-Jerry Obi
-Joshua Olutunde
-Okpala Julianah Ebunoluwa
-Okoli Kingsley
-Olutola Oluruntobi Paul
-Opadeji Sheriff Akorede
-Emmanuel Obikunle
-Samson Nnabuife
-Obiako Anthony
+    Nnadozie Anika
+    Obi Chukwudi Edwin
+    Edem Emmanuel Gabriel
+    Peter Oluwafemi Agboola
+    Jerry Obi
+    Joshua Olutunde
+    Okpala Julianah Ebunoluwa
+    Okoli Kingsley
+    Olutola Oluruntobi Paul
+    Opadeji Sheriff Akorede
+    Emmanuel Obikunle
+    Samson Nnabuife
+    Obiako Anthony
