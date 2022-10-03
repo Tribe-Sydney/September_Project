@@ -21,10 +21,11 @@ Creating the backend for an E-commerce web application. Which includes the follo
 3. Product service: Handles product creation,product listing, product update
 4. Cart/order Service: Handles orders, adding to cart,removing from cart Naving convension should follow this approach or similar
 
-## DOCUMENTATION
+# DOCUMENTATION
 
     The documentation can be found in the link below :
-    https://documenter.getpostman.com/view/22630811/2s83tJGWDb
+
+( https://documenter.getpostman.com/view/22630811/2s83tJGWDb)
 
 # Project members
 
