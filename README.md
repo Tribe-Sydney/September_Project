@@ -19,4 +19,4 @@ Creating the backend for an E-commerce web application. Which includes the follo
 2. User Service : The service properly handles profile/account update, get list of users, get a user
 
 3. Product service: Handles product creation,product listing, product update
-   4.Cart/order Service: Handles orders, adding to cart,removing from cart Naving convension should follow this approach or similar
+4. Cart/order Service: Handles orders, adding to cart,removing from cart Naving convension should follow this approach or similar
