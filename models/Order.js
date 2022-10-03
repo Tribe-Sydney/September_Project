@@ -17,11 +17,11 @@ const orderSchema = new mongoose.Schema({
                 type: Number,
                 default: 1
             },
-            amount: {
+            unitPrice: {
                 type: Number,
                 required: [true, 'product amount is required']
             },
-    totalAmount: {
+    amount: {
         type: Number,
     }
 })

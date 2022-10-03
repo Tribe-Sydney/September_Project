@@ -11,7 +11,7 @@ exports.createOrder =  catchAsync(async (req, res, next) => {
     const userId = req.user.id
 
     const prod = await Product.findById(productId)
-    amount = prod.amount
+    unitPrice = prod.amount
     
     if(!prod.available) {
         return next(new ErrorObject( `The product ${prod.name} is not available`, 400))
@@ -21,7 +21,9 @@ exports.createOrder =  catchAsync(async (req, res, next) => {
         return next(new ErrorObject( `The product ${prod.name} has ${prod.quantity} available`, 400))
     }
 
-    const order = await Order.create({ userId, productId, quantity, amount })
+    amount = quantity * unitPrice
+
+    const order = await Order.create({ userId, productId, quantity, unitPrice, amount })
 
     res.status(200).json({
         status: 'success',
@@ -84,14 +86,18 @@ exports.updateOrder = catchAsync(async (req, res, next) => {
         if(prod.quantity < quantity) {
             return next(new ErrorObject( `The product ${prod.name} has ${prod.quantity} available`, 400))
         }
+
+        amount = quantity * prod.amount
+
+        const update = {amount, quantity}
         
-        const updateOrder = await Order.findByIdAndUpdate(req.params.id, { $set: { quantity }}, {
+        const updatedOrder = await Order.findByIdAndUpdate(req.params.id, { $set: update}, {
             new: true,
         })
 
         res.status(200).json({
             status: 'success',
-            data: {updateOrder}
+            data: {updatedOrder}
         })
 
 
