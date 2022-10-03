@@ -1,6 +1,7 @@
 const User = require("../models/User.js");
 const CatchAsync = require("../utils/catch-async.js");
 const ErrorObject = require("../utils/error.js");
+const QueryMethod = require("../utils/query.js");
 
 // Delete A User
 exports.deleteUser = CatchAsync(async (req, res, next) => {
@@ -9,6 +10,11 @@ exports.deleteUser = CatchAsync(async (req, res, next) => {
     return next(
       new ErrorObject(`There is no user with the id ${req.params.id}`, 400)
     );
+  }
+  if (req.user.role !== "admin") {
+    if (req.user.id !== req.params.id) {
+      return next(new ErrorObject("You are not authorised", 403));
+    }
   }
   await User.findByIdAndDelete(req.params.id);
   res.status(204).json({
@@ -23,6 +29,9 @@ exports.updateUser = CatchAsync(async (req, res, next) => {
     return next(
       new ErrorObject(`There is no user with the id ${req.params.id}`, 400)
     );
+  }
+  if (req.user.id !== req.params.id) {
+    return next(new ErrorObject("You are not authorised", 403));
   }
   const email = req.body.email === undefined ? user.email : req.body.email;
   const fullName =
@@ -43,11 +52,11 @@ exports.updateUser = CatchAsync(async (req, res, next) => {
 //  Get All Users
 exports.getAllUser = CatchAsync(async (req, res, next) => {
   let queriedUsers = new QueryMethod(User.find(), req.query)
-  .sort()
-  .filter()
-  .limit()
-  .paginate();
-let users = await queriedUsers.query;
+    .sort()
+    .filter()
+    .limit()
+    .paginate();
+  let users = await queriedUsers.query;
   res.status(200).json({
     status: "success",
     results: users.length,
@@ -64,6 +73,11 @@ exports.getOneUser = CatchAsync(async (req, res, next) => {
     return next(
       new ErrorObject(`There is no user with the id ${req.params.id}`, 400)
     );
+  }
+  if (req.user.role !== "admin") {
+    if (req.user.id !== req.params.id) {
+      return next(new ErrorObject("You are not authorised", 403));
+    }
   }
   res.status(200).json({
     status: "success",

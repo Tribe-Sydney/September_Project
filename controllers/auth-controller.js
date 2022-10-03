@@ -35,7 +35,7 @@ const createAndSendToken = CatchAsync(async (user, statusCode, res) => {
 });
 
 // Sign Up User
-exports.signUp = CatchAsync(async (req, res) => {
+exports.signUp = CatchAsync(async (req, res, next) => {
   const { email, fullName, password, passwordConfirm, role } = req.body;
   const user = await User.create({
     email,
@@ -49,7 +49,7 @@ exports.signUp = CatchAsync(async (req, res) => {
 });
 
 // Sign In User
-exports.signIn = CatchAsync(async (req, res) => {
+exports.signIn = CatchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return next(new ErrorObject("Please enter your email and password", 400));

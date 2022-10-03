@@ -38,7 +38,6 @@ exports.createCart = catchAsync(async (req, res, next) => {
     amount,
   });
   const myOrder = await Order.findOne({ userId: req.user.id });
-  console.log(myOrder);
   if (!myOrder) {
     await Order.create({
       userId: req.user.id,
@@ -46,25 +45,18 @@ exports.createCart = catchAsync(async (req, res, next) => {
       totalAmount: amount,
     });
   } else {
-    console.log(myOrder.cartId);
     let cart_Id = [myOrder.cartId, cart.id];
     let totalAmount = myOrder.totalAmount + amount;
     const update = {
       totalAmount,
       cartId: cart_Id,
     };
-    // console.log(update);
-    // { $set: { name: 'jason bourne' }
     const order = await Order.findOneAndUpdate(
       { userId: req.user.id },
       { $set: update },
       { new: true }
     );
-    console.log(order);
   }
-
-  //   There is nothing in the order
-  // There is something in the order but not the same as the new one
 
   res.status(200).json({
     status: "success",
@@ -87,18 +79,18 @@ exports.getAllCarts = catchAsync(async (req, res, next) => {
   });
 });
 
-//Get an Cart
+//Get a Cart
 exports.getOneCart = catchAsync(async (req, res, next) => {
   const cart = await Cart.findById(req.params.id);
-
-  if (req.user.id !== cart.userId.toString()) {
-    return next(new ErrorObject(`You are not authorized!!!!!!!`, 403));
-  }
 
   if (!cart) {
     return next(
       new ErrorObject(`There is no cart with the id ${req.params.id}`, 400)
     );
+  }
+
+  if (req.user.id !== cart.userId.toString()) {
+    return next(new ErrorObject(`You are not authorized!!!!!!!`, 403));
   }
 
   res.status(200).json({
@@ -132,7 +124,9 @@ exports.updateCart = catchAsync(async (req, res, next) => {
   }
 
   amount = quantity * prod.amount;
-
+  const myOrder = await Order.findOne({ userId: req.user.id });
+  let totalAmount = myOrder.totalAmount - cart.amount;
+  let newAmount = totalAmount + amount;
   const update = { amount, quantity };
 
   const updatedCart = await Cart.findByIdAndUpdate(
@@ -141,6 +135,12 @@ exports.updateCart = catchAsync(async (req, res, next) => {
     {
       new: true,
     }
+  );
+
+  await Order.findOneAndUpdate(
+    { userId: req.user.id },
+    { $set: { totalAmount: newAmount } },
+    { new: true }
   );
 
   res.status(200).json({
@@ -158,7 +158,26 @@ exports.deleteCart = catchAsync(async (req, res, next) => {
     );
   }
 
+  const myOrder = await Order.findOne({ userId: req.user.id });
+  let totalAmount = myOrder.totalAmount - cart.amount;
+  const cart_id = myOrder.cartId.filter(
+    (id) => id.toString() !== cart._id.toString()
+  );
+  const update = {
+    totalAmount,
+    cartId: cart_id,
+  };
+
   await Cart.findByIdAndDelete(req.params.id);
+  if (cart_id.length === 0) {
+    await Order.findOneAndDelete({ userId: req.user.id });
+  }
+  await Order.findOneAndUpdate(
+    { userId: req.user.id },
+    { $set: update },
+    { new: true }
+  );
+
   res.status(204).json({
     status: "success",
     status: "cart deleted successfully",
