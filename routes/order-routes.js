@@ -1,18 +1,21 @@
 const express = require("express");
+const { protect, restrictTo } = require("../controllers/auth-controller");
 const {
-  getAllOrders,
-  createOrder,
-  updateOrder,
-  deleteOrder,
-  getOneOrder,
-} = require("../controllers/order-controllers");
+  getAllCarts,
+  createCart,
+  updateCart,
+  deleteCart,
+  getOneCart,
+} = require("../controllers/cart-controllers");
 
 const router = express.Router();
 
-router.post("/", createOrder);
-router.get("/", getAllOrders);
-router.get("/:id", getOneOrder);
-router.patch("/:id", updateOrder);
-router.delete("/:id", deleteOrder);
+router.post("/", protect, createCart);
+
+router.get("/", protect, restrictTo("admin"), getAllCarts); //admin
+
+router.get("/:id", protect, getOneCart); //login
+router.patch("/:id", protect, updateCart);
+router.delete("/:id", protect, deleteCart);
 
 module.exports = router;
