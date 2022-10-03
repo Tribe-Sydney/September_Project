@@ -4,19 +4,15 @@ const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema({
     userId: {
-        //mongoose.Schema.ObjectId
-        type: String,
+        type: mongoose.Schema.ObjectId,
         required: [true, 'order must have userId'],
-        // ref: 'User'
+        ref: 'User'
     },
-    product: [
-        {
-            productId : {
-                // type: mongoose.Schema.ObjectId,
-                type: String,
-                required: [true, 'product id is required'],
-                // ref: 'Product'
-            },
+    productId : {
+        type: mongoose.Schema.ObjectId,
+            required: [true, 'product id is required'],
+            ref: 'Product'
+        },
             quantity: {
                 type: Number,
                 default: 1
@@ -24,9 +20,7 @@ const orderSchema = new mongoose.Schema({
             amount: {
                 type: Number,
                 required: [true, 'product amount is required']
-            }
-        }
-    ],
+            },
     totalAmount: {
         type: Number,
     }

@@ -42,7 +42,12 @@ exports.updateUser = CatchAsync(async (req, res, next) => {
 
 //  Get All Users
 exports.getAllUser = CatchAsync(async (req, res, next) => {
-  const users = await User.find();
+  let queriedUsers = new QueryMethod(User.find(), req.query)
+  .sort()
+  .filter()
+  .limit()
+  .paginate();
+let users = await queriedUsers.query;
   res.status(200).json({
     status: "success",
     results: users.length,
