@@ -18,7 +18,7 @@ const router = express.Router();
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);
-router.get("/", protect, restrictTo("admin"), getAllUser);
+router.get("/", protect, getAllUser);
 router
   .route("/:id")
   .delete(protect, deleteUser)
