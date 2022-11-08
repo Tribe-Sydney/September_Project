@@ -45,7 +45,7 @@ exports.createCart = catchAsync(async (req, res, next) => {
       totalAmount: amount,
     });
   } else {
-    let cart_Id = [myOrder.cartId, cart.id];
+    let cart_Id = [...myOrder.cartId, cart.id];
     let totalAmount = myOrder.totalAmount + amount;
     const update = {
       totalAmount,
