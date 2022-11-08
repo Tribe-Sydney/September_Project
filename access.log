@@ -253,6 +253,7 @@
 ::1 - - [03/Oct/2022:20:19:05 +0000] "POST /api/v1/users/signin HTTP/1.1" 200 400 "-" "PostmanRuntime/7.29.2"
 ::1 - - [03/Oct/2022:20:19:13 +0000] "PATCH /api/v1/users/update-password/63382f1272f7962bf951dbd1 HTTP/1.1" 200 400 "-" "PostmanRuntime/7.29.2"
 ::1 - - [03/Oct/2022:20:19:26 +0000] "POST /api/v1/users/signin HTTP/1.1" 200 400 "-" "PostmanRuntime/7.29.2"
+<<<<<<< HEAD
 ::1 - - [04/Oct/2022:16:37:21 +0000] "POST /api/v1/users/forgot-password HTTP/1.1" 200 193 "-" "PostmanRuntime/7.29.2"
 ::1 - - [04/Oct/2022:16:40:09 +0000] "PATCH /api/v1/users/reset-password/adbc37367bc7f14a835f725e5c240ad7875b8e702693cb99da50ef98954fcaab HTTP/1.1" 200 400 "-" "PostmanRuntime/7.29.2"
 ::1 - - [15/Oct/2022:11:06:24 +0000] "GET /ws HTTP/1.1" 404 1457 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
@@ -287,3 +288,5 @@
 ::1 - - [16/Oct/2022:15:24:37 +0000] "POST /api/v1/carts HTTP/1.1" 200 230 "-" "PostmanRuntime/7.29.2"
 ::1 - - [16/Oct/2022:15:24:44 +0000] "POST /api/v1/carts HTTP/1.1" 200 230 "-" "PostmanRuntime/7.29.2"
 ::1 - - [16/Oct/2022:15:30:19 +0000] "GET /api/v1/orders HTTP/1.1" 200 438 "-" "PostmanRuntime/7.29.2"
+=======
+>>>>>>> 87f634028ca690cad631968f789d8363b0b32a3c
